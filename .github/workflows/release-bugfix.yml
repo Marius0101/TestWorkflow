@@ -54,7 +54,9 @@ jobs:
           "maintainer_can_modify": true
         }')
         PR_NUMBER=$(echo "$PR_RESPONSE" | jq -r '.number')
-        echo "PR_RESPONSE=" >> $GITHUB_ENV
+        echo $PR_NUMBER
+        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
 
     - name: Assign PR to a specific user
       run: |
