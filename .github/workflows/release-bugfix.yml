@@ -51,7 +51,7 @@ jobs:
           "head": "'"${{ steps.set_branch_name.outputs.branch_name }}"'",
           "base": "develop",
           "body": "This PR merges changes from release branch into develop.",
-          "maintainer_can_modify": true,
+          "maintainer_can_modify": true
         }'
         echo "PR_RESPONSE=$PR_RESPONSE" >> $GITHUB_ENV
     - name: Extract PR Number
