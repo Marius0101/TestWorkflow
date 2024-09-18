@@ -20,7 +20,7 @@ jobs:
       run: |
         BRANCH_NAME="bugfix/${{ inputs.Ticket_ID }}-Create-files"
         git checkout -b "$BRANCH_NAME"
-        git push origin "$BRANCH_NAME"
+        git --set-upstream push origin "$BRANCH_NAME"
 
     - name: Create some changes
       run: ./make-files.sh
@@ -29,7 +29,7 @@ jobs:
       run: |
         git config --local user.name "${{ github.actor }}"
         git config --local user.email "${{ github.actor }}@users.noreply.github.com"
-        
+
     - name: Commit and push
       run: |
         git add -A
