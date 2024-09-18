@@ -1,0 +1,32 @@
+name: Create Bugfix Branch and PR
+
+on:
+  workflow_dispatch:
+    inputs:
+        Ticket_ID:
+            description: 'Ticket number'
+            required: true
+            type: string
+
+jobs:
+  create-bugfix:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create bugfix branch
+      run: |
+        BRANCH_NAME=bugfix/${{ inputs.Ticket_ID }}
+        git checkout -b "bugfix/$BRANCH_NAME"
+        git push origin "bugfix/$BRANCH_NAME"
+
+    - name: Create some changes
+      run: ./make-files.sh
+    
+    - name: Commit and push
+      run: |
+        git add -A
+        git commit -m "Add files"
+        git push
