@@ -25,6 +25,11 @@ jobs:
     - name: Create some changes
       run: ./make-files.sh
     
+    - name: Configure Git user as workflow actor
+      run: |
+        git config --local user.name "${{ github.actor }}"
+        git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+        
     - name: Commit and push
       run: |
         git add -A
