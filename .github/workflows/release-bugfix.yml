@@ -18,7 +18,7 @@ jobs:
 
     - name: Create bugfix branch
       run: |
-        BRANCH_NAME="bugfix/${{ inputs.Ticket_ID }} Create files"
+        BRANCH_NAME="bugfix/${{ inputs.Ticket_ID }}-Create-files"
         git checkout -b "$BRANCH_NAME"
         git push origin "$BRANCH_NAME"
 
