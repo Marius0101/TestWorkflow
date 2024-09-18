@@ -53,12 +53,8 @@ jobs:
           "body": "This PR merges changes from release branch into develop.",
           "maintainer_can_modify": true
         }')
-        echo "PR_RESPONSE=$PR_RESPONSE" >> $GITHUB_ENV
-    - name: Extract PR Number
-      id: extract_pr_number
-      run: |
-        PR_NUMBER=$(echo "${{ env.PR_RESPONSE }}" | jq -r '.number')
-        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+        PR_NUMBER=$(echo "$PR_RESPONSE" | jq -r '.number')
+        echo "PR_RESPONSE=" >> $GITHUB_ENV
 
     - name: Assign PR to a specific user
       run: |
