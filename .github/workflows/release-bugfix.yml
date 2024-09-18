@@ -52,5 +52,6 @@ jobs:
           "base": "develop",
           "body": "This PR merges changes from release branch into develop.",
           "maintainer_can_modify": true,
-          "assignee" : "${{ github.actor }}"
+          "assignees": ["${{ github.actor }}"]
+          "requested_reviewers" : ["${{ github.actor }}"]
         }'
