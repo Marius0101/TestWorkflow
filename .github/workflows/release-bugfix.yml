@@ -32,8 +32,8 @@ jobs:
     
     - name: Configure Git user as workflow actor
       run: |
-        git config --local user.name "${{ github.actor }}"
-        git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --local user.name "${{ secrets.BOT }}"
+        git config --local user.email "${{ secrets.BOT }}@users.noreply.github.com"
 
     - name: Commit and push
       run: |
@@ -67,3 +67,25 @@ jobs:
           -d '{
             "assignees": ["${{ github.actor }}"]
           }'
+
+    - name: Assign PR to a specific user
+      run: |
+        curl -X PATCH \
+          -H "Authorization: token ${{ secrets.TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ env.PR_NUMBER }} \
+          -d '{
+            "assignees": ["${{ github.actor }}"]
+          }'
+
+    - name: Request reviewrs
+      run: |
+        curl -X PATCH \
+          -H "Authorization: token ${{ secrets.TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/pulls/${{ env.PR_NUMBER }}/requested_reviewers \
+          -d '{
+            "reviewers": ["${{ secrets.BOT }}"],
+            "team_reviewers": []
+          }'
+      
