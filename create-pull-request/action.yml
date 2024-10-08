@@ -53,12 +53,12 @@ runs:
           -token '${{ inputs.token }}' `
           -owner '${{ inputs.owner }}' `
           -repo '${{ inputs.repo }}' `
-          -baseBranch '${{ inputs.base-branch }}'' `
+          -baseBranch '${{ inputs.base-branch }}' `
           -headBranch '${{ inputs.head-branch }}' `
           -title '${{ inputs.title }}' `
           -body '${{ inputs.body }}' `
           -modify '${{ inputs.modify }}' `
           -assignees [${{ inputs.assignees }}] `
           -reviewers [${{ inputs.reviewers }}' `
-          -teamReviewers [${{ inputs.team-reviewers }}]'
+          -teamReviewers [${{ inputs.team-reviewers }}]
       shell: pwsh
