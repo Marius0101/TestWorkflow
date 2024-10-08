@@ -1,0 +1,25 @@
+name: test function
+on:
+    push:
+jobs:
+    test-push-windows:
+        runs-on: windows-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Run Composite Action on Linux
+              uses: ./create-pull-request
+              with:
+                token: test
+    test-push-linux:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Run Composite Action on Linux
+              uses: ./create-pull-request
+              with:
+                token: test

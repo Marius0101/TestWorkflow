@@ -1,0 +1,1 @@
+Write-Output "Run on windows"

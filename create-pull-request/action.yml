@@ -1,0 +1,24 @@
+name: Create pull request
+description:  Create a pull request 
+author: Marius Mihalcea
+
+inputs:
+  token:
+    description: the validation token
+    required: true
+  actor:
+    description: the username of the person you want to create the pull request
+    required: false
+    default: GithubBotMarius
+runs:
+  using: "composite"
+  steps:
+    - name: Run Bash script on Linux
+      if: runner.os == 'Linux'
+      run: ./script.sh
+      shell: bash
+
+    - name: Run PowerShell script on Windows
+      if: runner.os == 'Windows'
+      run: ./script.ps1
+      shell: pwsh
