@@ -71,16 +71,18 @@ $headers = @{
     "X-GitHub-Api-Version" = "2022-11-28"
 }
 
-$body = @{
+$APIbody = @{
     "title" = $title
     "head" = $headBranch
     "base" = $baseBranch
     "body"= $body
     "maintainer_can_modify"=  $modify
 }
-$jsonBody = ($body | ConvertTo-Json)
-$response = Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $body -ContentType "application/json"
+$jsonBody = ($APIbody | ConvertTo-Json)
+Write-Output $jsonBody
+$response = Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $jsonBody -ContentType "application/json"
 Write-Output($response)
+
 foreach($assignee in $Script:listAssignees){
     Write-Output "----"
     Write-Output "Assign:$assignee"
