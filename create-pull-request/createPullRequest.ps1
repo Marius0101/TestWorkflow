@@ -68,7 +68,7 @@ $Script:Uri = "https://api.github.com/repos/$owner/$repo/pulls"
 $headers = @{
     "Authorization" = "Bearer $token"
     "Accept" = "application/vnd.github.v3+json"
-    "X-GitHub-Api-Version" = 2022-11-28
+    "X-GitHub-Api-Version" = "2022-11-28"
 }
 
 $body = @{
@@ -79,8 +79,8 @@ $body = @{
     "maintainer_can_modify"=  $modify
 }
 $jsonBody = ($body | ConvertTo-Json)
-Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $body
-
+$response = Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $body
+Write-Output($response)
 foreach($assignee in $Script:listAssignees){
     Write-Output "----"
     Write-Output "Assign:$assignee"
