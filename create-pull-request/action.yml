@@ -13,10 +13,10 @@ inputs:
     description: the name of the repository
     required: true
   base-branch:
-    description: the name of the branch where you have the changes
+    description: the name of the branch where you want to merge the changes
     required: true
   head-branch:
-    description: the name of the branch where you want merge the changes
+    description: the name of the branch where the changes are
     required: true
   title:
     description: the title of the pull request
