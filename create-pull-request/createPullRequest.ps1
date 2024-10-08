@@ -70,13 +70,13 @@ $headers = @{
     "Accept" = "application/vnd.github.v3+json"
     "X-GitHub-Api-Version" = "2022-11-28"
 }
-
+$modifyBoolean = [System.Convert]::ToBoolean($modify) 
 $APIbody = @{
     "title" = $title
     "head" = $headBranch
     "base" = $baseBranch
     "body"= $body
-    "maintainer_can_modify"=  $modify
+    "maintainer_can_modify"=  $modifyBoolean
 }
 $jsonBody = ($APIbody | ConvertTo-Json)
 Write-Output $jsonBody
@@ -92,5 +92,10 @@ foreach($reviewer in $listReviewers){
     Write-Output "----"
     Write-Output "Reviewer:$reviewer"
 }
-
+try {
+$result = [System.Convert]::ToBoolean($a) 
+} catch [FormatException] {
+$result = $false
+} 
+write-output $result
 
