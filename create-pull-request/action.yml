@@ -15,10 +15,17 @@ runs:
   steps:
     - name: Run Bash script on Linux
       if: runner.os == 'Linux'
-      run: ./script.sh
+      run: ls -al
+      shell: bash
+    - name: Run Bash script on Linux
+      if: runner.os == 'Linux'
+      run: ${{ github.workspace }}/script.sh
       shell: bash
 
+    - name: List files in the current directory
+      run: Get-ChildItem
+      shell: pwsh
     - name: Run PowerShell script on Windows
       if: runner.os == 'Windows'
-      run: ./script.ps1
+      run: ${{ github.workspace }}/script.ps1
       shell: pwsh
