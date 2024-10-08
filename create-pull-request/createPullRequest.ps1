@@ -79,7 +79,7 @@ $body = @{
     "maintainer_can_modify"=  $modify
 }
 $jsonBody = ($body | ConvertTo-Json)
-$response = Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $body
+$response = Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $jsonBody -ContentType "application/json"
 Write-Output($response)
 foreach($assignee in $Script:listAssignees){
     Write-Output "----"
