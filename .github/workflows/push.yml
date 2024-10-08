@@ -12,15 +12,14 @@ jobs:
             - name: Run Composite Action on Windows
               uses: ./create-pull-request
               with:
-                token: test
-                owner: test
-                repo: test
-                base-branch: test
-                head-branch: branch
+                token: ${{ secrets.TOKEN }}
+                owner: Marius0101
+                repo: TestWorkflow
+                base-branch: develop
+                head-branch: release/1.0.0
                 reviewers: |
-                    marius
-                    mihalcea
-                    octavian
+                    ${{ github.actor }}
+                    test
 
     # test-push-linux:
     #     runs-on: ubuntu-latest
