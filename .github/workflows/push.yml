@@ -9,7 +9,7 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
-            - name: Run Composite Action on Linux
+            - name: Run Composite Action on Windows
               uses: ./create-pull-request
               with:
                 token: test

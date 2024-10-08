@@ -31,7 +31,7 @@ inputs:
   assignees:
     description: the username of the persons that will be assigne to this PR
     required: false
-    default: ${{GITHUB_ACTOR}}
+    default: ${{ github.actor }}
   reviewers:
     description: the username of the persons you want to add as reviewers
     required: false
