@@ -21,16 +21,33 @@ param(
     $body,
     [string]
     $modify,
-    [string[]]
+    [string]
     $assignees,
-    [string[]]
+    [string]
     $reviewers,
-    [string[]]
+    [string]
     $teamReviewers
 )
 #-------------------------------------------------------------------------------[Functions]-------------------------------------------------------------------------------
+function ConvertTo-Array{
+    param (
+        # Parameter help description
+        [string]
+        $inputString
+    )
+    if([string]::IsNullOrEmpty($inputString)){
+        return @()
+    }
+    $list = $inputString -split "\s+"| Where-Object { $_ -ne "" }
+    return $list
+}
+
 #------------------------------------------------------------------------------[Dot-Sourcing]-----------------------------------------------------------------------------
 #-------------------------------------------------------------------------------[Execution]-------------------------------------------------------------------------------
+$Script:listAssignees
+$Script:listReviewers
+$Script:listTeamReviewers
+
 if ([string]::IsNullOrEmpty($title)) {
     $title = "Merge $baseBranch branch into the $headBranch branch"
 }
@@ -43,13 +60,33 @@ Error Message:
 '@
     Write-Error -Message $error  -ErrorAction Stop
 }
+$Script:listAssignees = ConvertTo-Array -inputString $assignees
+$Script:listReviewers = ConvertTo-Array -inputString $reviewers
+$Script:listTeamReviewers = ConvertTo-Array -inputString $teamReviewers
+$Script:Uri = "https://api.github.com/repos/$owner/$repo/pulls"
 
-foreach($assignee in $assignees){
+$headers = @{
+    "Authorization" = "Bearer $token"
+    "Accept" = "application/vnd.github.v3+json"
+    "X-GitHub-Api-Version" = 2022-11-28
+}
+
+$body = @{
+    "title" = $title
+    "head" = $headBranch
+    "base" = $baseBranch
+    "body"= $body
+    "maintainer_can_modify"=  $modify
+}
+$jsonBody = ($body | ConvertTo-Json)
+Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $body
+
+foreach($assignee in $Script:listAssignees){
     Write-Output "----"
     Write-Output "Assign:$assignee"
 }
 
-foreach($reviewer in $reviewers){
+foreach($reviewer in $listReviewers){
     Write-Output "----"
     Write-Output "Reviewer:$reviewer"
 }
