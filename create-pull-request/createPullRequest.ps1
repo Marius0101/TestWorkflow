@@ -92,10 +92,10 @@ foreach($reviewer in $listReviewers){
     Write-Output "----"
     Write-Output "Reviewer:$reviewer"
 }
-try {
-$result = [System.Convert]::ToBoolean($a) 
-} catch [FormatException] {
-$result = $false
-} 
-write-output $result
+# try {
+# $result = [System.Convert]::ToBoolean($a) 
+# } catch [FormatException] {
+# $result = $false
+# } 
+# write-output $result
 
