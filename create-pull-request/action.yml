@@ -59,6 +59,6 @@ runs:
           -body '${{ inputs.body }}' `
           -modify '${{ inputs.modify }}' `
           -assignees [${{ inputs.assignees }}] `
-          -reviewers [${{ inputs.reviewers }}' `
+          -reviewers [${{ inputs.reviewers }} `
           -teamReviewers [${{ inputs.team-reviewers }}]
       shell: pwsh
