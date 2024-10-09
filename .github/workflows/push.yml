@@ -12,7 +12,8 @@ jobs:
             - name: Run Composite Action on Windows
               uses: ./create-pull-request
               with:
-                token: ${{ secrets.TOKEN }}
+                # token: ${{ secrets.TOKEN }}
+                token: '***'
                 owner: Marius0101
                 repo: TestWorkflow
                 base-branch: release/1.0.0

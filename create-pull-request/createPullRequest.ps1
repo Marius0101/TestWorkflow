@@ -55,8 +55,20 @@ function Invoke-GitHubAPI{
         $contentType
     )
     [psobject]$jsonBody = $body | ConvertTo-Json
-    $response = Invoke-RestMethod -Uri $uri -Method $method -Headers $header -Body $jsonBody -ContentType $contentType
-    Write-Output($response)
+    try{
+        $response = Invoke-RestMethod -Uri $uri -Method $method -Headers $header -Body $jsonBody -ContentType $contentType
+    }
+    catch{
+    [string]$errorResponse = @"
+Houston, we have a problem.
+-------------------------------
+Error Message:
+    $($_.Exception.Message)
+"@
+        #Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError" -ErrorAction Stop
+        Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError"
+    }
+    Write-Output "$response"
     return $response
 }
 #------------------------------------------------------------------------------[Dot-Sourcing]-----------------------------------------------------------------------------
