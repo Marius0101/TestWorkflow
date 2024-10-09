@@ -41,7 +41,25 @@ function ConvertTo-Array{
     $list = $inputString -split "\s+"| Where-Object { $_ -ne "" }
     return $list
 }
-
+function Invoke-GitHubAPI{
+    param (
+        [string]
+        $uri,
+        [string]
+        $method,
+        [hashtable]
+        $header,
+        [hashtable]
+        $body,
+        [string]
+        $contentType
+    )
+    [string]::$jsonHeader= $header | ConvertTo-Json -Depth 3
+    [string]::$jsonBody = $body | ConvertTo-Json -Depth 3
+    $response = Invoke-RestMethod -Uri $uri -Method $method -Headers $jsonHeader -Body $jsonBody -ContentType $contentType
+    Write-Output($response)
+    return $response
+}
 #------------------------------------------------------------------------------[Dot-Sourcing]-----------------------------------------------------------------------------
 #-------------------------------------------------------------------------------[Execution]-------------------------------------------------------------------------------
 $Script:listAssignees
@@ -60,6 +78,7 @@ Error Message:
 '@
     Write-Error -Message $error  -ErrorAction Stop
 }
+$modifyBoolean = [System.Convert]::ToBoolean($modify) 
 $Script:listAssignees = ConvertTo-Array -inputString $assignees
 $Script:listReviewers = ConvertTo-Array -inputString $reviewers
 $Script:listTeamReviewers = ConvertTo-Array -inputString $teamReviewers
@@ -70,7 +89,6 @@ $headers = @{
     "Accept" = "application/vnd.github.v3+json"
     "X-GitHub-Api-Version" = "2022-11-28"
 }
-$modifyBoolean = [System.Convert]::ToBoolean($modify) 
 $APIbody = @{
     "title" = $title
     "head" = $headBranch
@@ -80,8 +98,12 @@ $APIbody = @{
 }
 $jsonBody = ($APIbody | ConvertTo-Json)
 Write-Output $jsonBody
-$response = Invoke-RestMethod -Uri $Script:Uri -Method Post -Headers $headers -Body $jsonBody -ContentType "application/json"
-Write-Output($response)
+$response = Invoke-GitHubAPI `
+    -uri $Script:Uri `
+    -method Post `
+    -header $headers `
+    -body $APIbody `
+    -contentType "application/json"
 
 foreach($assignee in $Script:listAssignees){
     Write-Output "----"
