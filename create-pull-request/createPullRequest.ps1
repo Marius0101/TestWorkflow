@@ -60,13 +60,18 @@ function Invoke-GitHubAPI{
     }
     catch{
     [string]$errorResponse = @"
-Houston, we have a problem.
+Houston, we have a problem. 
 -------------------------------
-Error Message:
+Error Message: 
     $($_.Exception.Message)
+Stack Trace:
+    $($_.ScriptStackTrace)
+
 "@
         #Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError" -ErrorAction Stop
-        Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError"
+        Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError" | Format-List
+        
+        # Optionally, throw the error again if you want to stop execution
     }
     Write-Output "$response"
     return $response
@@ -107,7 +112,7 @@ $Script:Uri = "https://api.github.com/repos/$owner/$repo/pulls"
     "body"= $body
     "maintainer_can_modify"=  $modifyBoolean
 }
-$response = Invoke-GitHubAPI `
+$responseCreatePull = Invoke-GitHubAPI `
     -uri $Script:Uri `
     -method Post `
     -header $headers `
