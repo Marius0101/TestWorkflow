@@ -54,9 +54,8 @@ function Invoke-GitHubAPI{
         [string]
         $contentType
     )
-    [string]::$jsonHeader= $header | ConvertTo-Json -Depth 3
-    [string]::$jsonBody = $body | ConvertTo-Json -Depth 3
-    $response = Invoke-RestMethod -Uri $uri -Method $method -Headers $jsonHeader -Body $jsonBody -ContentType $contentType
+    [psobject]$jsonBody = $body | ConvertTo-Json
+    $response = Invoke-RestMethod -Uri $uri -Method $method -Headers $header -Body $jsonBody -ContentType $contentType
     Write-Output($response)
     return $response
 }
@@ -65,7 +64,7 @@ function Invoke-GitHubAPI{
 $Script:listAssignees
 $Script:listReviewers
 $Script:listTeamReviewers
-
+$Script:test
 if ([string]::IsNullOrEmpty($title)) {
     $title = "Merge $baseBranch branch into the $headBranch branch"
 }
@@ -84,25 +83,23 @@ $Script:listReviewers = ConvertTo-Array -inputString $reviewers
 $Script:listTeamReviewers = ConvertTo-Array -inputString $teamReviewers
 $Script:Uri = "https://api.github.com/repos/$owner/$repo/pulls"
 
-$headers = @{
+[hashtable]$headers = @{
     "Authorization" = "Bearer $token"
     "Accept" = "application/vnd.github.v3+json"
     "X-GitHub-Api-Version" = "2022-11-28"
 }
-$APIbody = @{
+[hashtable]$Script:bodyVariables = @{
     "title" = $title
     "head" = $headBranch
     "base" = $baseBranch
     "body"= $body
     "maintainer_can_modify"=  $modifyBoolean
 }
-$jsonBody = ($APIbody | ConvertTo-Json)
-Write-Output $jsonBody
 $response = Invoke-GitHubAPI `
     -uri $Script:Uri `
     -method Post `
     -header $headers `
-    -body $APIbody `
+    -body $Script:bodyVariables `
     -contentType "application/json"
 
 foreach($assignee in $Script:listAssignees){
