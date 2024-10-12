@@ -60,28 +60,39 @@ function Invoke-GitHubAPI{
     }
     catch{
     [string]$errorResponse = @"
-Houston, we have a problem. 
--------------------------------
+    
+Houston, this is the problem. Please resolve it before trying again.
+=======================================================================
 Error Message: 
     $($_.Exception.Message)
-Stack Trace:
-    $($_.ScriptStackTrace)
-
+=======================================================================
 "@
         #Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError" -ErrorAction Stop
-        Write-Error -Message $errorResponse -Category InvalidResult -ErrorId "APIError" | Format-List
+        Write-Error -Message $errorResponse -Category InvalidResult -ErrorAction "Stop"
         
         # Optionally, throw the error again if you want to stop execution
     }
     Write-Output "$response"
     return $response
 }
+
+# function Write-ScriptError {
+#     param (
+#         OptionalParameters
+#     )
+    
+# }
 #------------------------------------------------------------------------------[Dot-Sourcing]-----------------------------------------------------------------------------
+trap{
+    Write-Host "$($_.Exception.Message)" -ForegroundColor Red
+    throw $Script:ErrorMsg
+}
 #-------------------------------------------------------------------------------[Execution]-------------------------------------------------------------------------------
 $Script:listAssignees
 $Script:listReviewers
 $Script:listTeamReviewers
 $Script:test
+$Script:ErrorMsg = "The script fail check error mesage above for more information"
 if ([string]::IsNullOrEmpty($title)) {
     $title = "Merge $baseBranch branch into the $headBranch branch"
 }
