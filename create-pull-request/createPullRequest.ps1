@@ -129,3 +129,4 @@ $responseCreatePull = Invoke-GitHubAPI `
     -header $headers `
     -body $Script:bodyVariables `
     -contentType "application/json"
+Write-Output $responseCreatePull
