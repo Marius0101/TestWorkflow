@@ -60,7 +60,7 @@ function Invoke-GitHubAPI{
     }
     catch{
     [string]$errorResponse = @"
-    
+
 Houston, this is the problem. Please resolve it before trying again.
 =======================================================================
 Error Message: 
@@ -129,20 +129,3 @@ $responseCreatePull = Invoke-GitHubAPI `
     -header $headers `
     -body $Script:bodyVariables `
     -contentType "application/json"
-
-foreach($assignee in $Script:listAssignees){
-    Write-Output "----"
-    Write-Output "Assign:$assignee"
-}
-
-foreach($reviewer in $listReviewers){
-    Write-Output "----"
-    Write-Output "Reviewer:$reviewer"
-}
-# try {
-# $result = [System.Convert]::ToBoolean($a) 
-# } catch [FormatException] {
-# $result = $false
-# } 
-# write-output $result
-
